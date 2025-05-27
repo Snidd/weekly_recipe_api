@@ -2,8 +2,11 @@ use std::string::ToString;
 
 use ingredient::*;
 use ingredient_type::*;
+use recipe_usage::*;
+use time::UtcDateTime;
 mod ingredient;
 mod ingredient_type;
+mod recipe_usage;
 
 #[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Recipe {
@@ -13,6 +16,7 @@ pub struct Recipe {
     pub typed_ingredients: Vec<Ingredient>,
     pub other_ingredients: Vec<String>,
     pub instructions: String,
+    pub usage: Vec<UtcDateTime>,
 }
 
 impl Recipe {
@@ -41,12 +45,14 @@ impl Recipe {
             vec![
                 Ingredient {
                     name: "Kyckling".to_string(),
-                    quantity: "500g".to_string(),
+                    quantity: "500".to_string(),
+                    unit: "g".to_string(),
                     ingredient_type: IngredientType::Protein,
                 },
                 Ingredient {
                     name: "Ris".to_string(),
-                    quantity: "200g".to_string(),
+                    quantity: "200".to_string(),
+                    unit: "g".to_string(),
                     ingredient_type: IngredientType::Carbohydrate,
                 },
             ],

@@ -16,3 +16,4 @@ sqlx = { version = "0.8", features = [
     "migrate",
 ] }
 serde = { version = "1.0.219", features = ["derive"] }
+time = "0.3.41"
