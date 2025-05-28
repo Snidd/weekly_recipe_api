@@ -35,6 +35,7 @@ impl Recipe {
             typed_ingredients,
             other_ingredients,
             instructions,
+            usage: Vec::new(),
         }
     }
     pub fn example_one() -> Self {

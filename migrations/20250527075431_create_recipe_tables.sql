@@ -34,3 +34,16 @@ CREATE TABLE recipe_usage (
     usage_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
 );
+CREATE TABLE week (
+    id SERIAL PRIMARY KEY,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE week_recipe (
+    week_id INT NOT NULL,
+    recipe_id INT NOT NULL,
+    PRIMARY KEY (week_id, recipe_id),
+    FOREIGN KEY (week_id) REFERENCES week(id) ON DELETE CASCADE,
+    FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
+);
