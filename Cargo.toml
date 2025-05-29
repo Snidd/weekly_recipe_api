@@ -19,3 +19,12 @@ sqlx = { version = "0.8", features = [
 serde = { version = "1.0.219", features = ["derive"] }
 time = "0.3.41"
 dotenv = "0.15.0"
+axum = { version = "0.8.4", features = ["tower-log", "macros"] }
+tower = "0.5.2"
+tower-http = { version = "0.6.4", features = ["trace", "add-extension"] }
+itertools = "0.14.0"
+env_logger = "0.11.8"
+thiserror = "2.0.12"
+anyhow = "1.0.98"
+clap = { version = "4.5.39", features = ["derive", "env"] }
+log = "0.4.27"

@@ -1,7 +1,10 @@
+use serde::Serialize;
+
 use super::{IngredientType, ingredient::Ingredient};
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct RecipeIngredient {
+    #[serde(flatten)]
     pub ingredient: Ingredient,
     pub quantity: i32,
     pub unit: String,
@@ -15,24 +18,7 @@ impl RecipeIngredient {
             unit,
         }
     }
-    pub async fn get_other_ingredients_by_recipe_id(
-        pool: &sqlx::Pool<sqlx::Postgres>,
-        recipe_id: i32,
-    ) -> Result<Vec<String>, sqlx::Error> {
-        let ingredients = sqlx::query!(
-            "SELECT ingredient_row FROM recipe_other_ingredient WHERE recipe_id = $1",
-            recipe_id
-        )
-        .fetch_all(pool)
-        .await?;
 
-        let ingredients = ingredients
-            .into_iter()
-            .map(|row| row.ingredient_row)
-            .collect();
-
-        Ok(ingredients)
-    }
     pub async fn get_by_recipe_id(
         pool: &sqlx::Pool<sqlx::Postgres>,
         recipe_id: i32,

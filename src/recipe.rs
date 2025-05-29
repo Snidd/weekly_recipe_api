@@ -2,25 +2,27 @@ use std::string::ToString;
 
 pub use ingredient::*;
 pub use ingredient_type::*;
+pub use other_ingredient::*;
 pub use recipe_ingredient::*;
 pub use recipe_usage::*;
+use serde::Serialize;
 use sqlx::pool;
 use time::UtcDateTime;
 mod ingredient;
 mod ingredient_type;
+mod other_ingredient;
 mod recipe_ingredient;
 mod recipe_usage;
 
-#[derive(Debug, Clone, sqlx::FromRow)]
+#[derive(Debug, Clone, sqlx::FromRow, Serialize)]
 pub struct Recipe {
     #[sqlx(rename = "recipe_id")]
     pub id: i32,
     pub image_url: Option<String>,
     pub name: String,
     pub ingredients: Vec<RecipeIngredient>,
-    pub other_ingredients: Vec<String>,
+    pub other_ingredients: Vec<OtherIngredient>,
     pub instructions: Option<String>,
-    pub usage: Vec<UtcDateTime>,
 }
 
 impl Recipe {
@@ -39,19 +41,50 @@ impl Recipe {
             instructions,
         }
     }
+    pub async fn get_all(pool: &sqlx::Pool<sqlx::Postgres>) -> Result<Vec<Self>, sqlx::Error> {
+        let recipes = sqlx::query_as!(
+            RecipeDB,
+            "SELECT recipe_id, image_url, name, instructions FROM recipe"
+        )
+        .fetch_all(pool)
+        .await?;
+
+        let mut result = Vec::new();
+        for recipe in recipes {
+            let ingredients = RecipeIngredient::get_by_recipe_id(pool, recipe.recipe_id).await?;
+            let other_ingredients =
+                OtherIngredient::get_other_ingredients_by_recipe_id(pool, recipe.recipe_id).await?;
+
+            result.push(Recipe {
+                id: recipe.recipe_id,
+                image_url: recipe.image_url,
+                name: recipe.name,
+                ingredients,
+                other_ingredients,
+                instructions: recipe.instructions,
+            });
+        }
+
+        Ok(result)
+    }
     pub async fn add_other_ingredient(
         &self,
         pool: &sqlx::Pool<sqlx::Postgres>,
         name: &str,
-    ) -> Result<(), sqlx::Error> {
-        sqlx::query!(
-            "INSERT INTO recipe_other_ingredient (recipe_id, ingredient_row) VALUES ($1, $2)",
+    ) -> Result<OtherIngredient, sqlx::Error> {
+        let other_ingredient_id = sqlx::query!(
+            "INSERT INTO recipe_other_ingredient (recipe_id, ingredient_row) VALUES ($1, $2) RETURNING recipe_other_ingredient_id",
             self.id,
             name
         )
-        .execute(pool)
+        .fetch_one(pool)
         .await?;
-        Ok(())
+
+        let other_ingredient_id = other_ingredient_id.recipe_other_ingredient_id;
+        Ok(OtherIngredient {
+            ingredient_row: name.to_string(),
+            id: other_ingredient_id,
+        })
     }
     pub async fn get_by_id(
         pool: &sqlx::Pool<sqlx::Postgres>,
@@ -79,7 +112,7 @@ impl Recipe {
         if let Some(recipe) = recipe {
             let ingredients = RecipeIngredient::get_by_recipe_id(pool, id).await?;
             let other_ingredients =
-                RecipeIngredient::get_other_ingredients_by_recipe_id(pool, id).await?;
+                OtherIngredient::get_other_ingredients_by_recipe_id(pool, id).await?;
 
             let recipe = Recipe {
                 id: recipe.recipe_id,
@@ -88,7 +121,6 @@ impl Recipe {
                 ingredients,
                 other_ingredients,
                 instructions: recipe.instructions,
-                usage: vec![],
             };
             return Ok(Some(recipe));
         }
@@ -133,9 +165,8 @@ impl RecipeUnsaved {
             image_url: self.image_url.clone(),
             name: self.name.clone(),
             ingredients: self.ingredients.clone(),
-            other_ingredients: self.other_ingredients.clone(),
+            other_ingredients: Vec::new(),
             instructions: Some(self.instructions.clone()),
-            usage: vec![],
         };
 
         for ingredient in &self.ingredients {
