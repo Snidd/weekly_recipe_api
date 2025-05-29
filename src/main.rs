@@ -23,6 +23,13 @@ async fn main() -> Result<(), sqlx::Error> {
         .connect(database_url.as_str())
         .await?;
 
+    let recipe = Recipe::get_by_id(&pool, 1).await?;
+    if let Some(recipe) = recipe {
+        println!("Recipe found: {:?}", recipe);
+    } else {
+        println!("No recipe found with the given ID.");
+    }
+
     /*
     let new_recipe = Recipe::new(
         "testnamn".to_string(),

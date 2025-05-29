@@ -69,22 +69,40 @@ impl Recipe {
         GROUP BY recipe.id
              */
         let recipe = sqlx::query_as!(
-            Recipe,
+            RecipeDB,
             "SELECT recipe_id, image_url, name, instructions FROM recipe WHERE recipe_id = $1",
             id
         )
         .fetch_optional(pool)
         .await?;
 
-        if let Some(mut recipe) = recipe {
-            recipe.ingredients = RecipeIngredient::get_by_recipe_id(pool, id).await?;
-            recipe.other_ingredients =
+        if let Some(recipe) = recipe {
+            let ingredients = RecipeIngredient::get_by_recipe_id(pool, id).await?;
+            let other_ingredients =
                 RecipeIngredient::get_other_ingredients_by_recipe_id(pool, id).await?;
+
+            let recipe = Recipe {
+                id: recipe.recipe_id,
+                image_url: recipe.image_url,
+                name: recipe.name,
+                ingredients,
+                other_ingredients,
+                instructions: recipe.instructions,
+                usage: vec![],
+            };
             return Ok(Some(recipe));
         }
 
         Ok(None)
     }
+}
+
+#[derive(Debug, Clone, sqlx::FromRow)]
+struct RecipeDB {
+    pub recipe_id: i32,
+    pub image_url: Option<String>,
+    pub name: String,
+    pub instructions: Option<String>,
 }
 
 #[derive(Debug, Clone)]

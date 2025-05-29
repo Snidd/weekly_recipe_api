@@ -1,4 +1,4 @@
-use super::ingredient::Ingredient;
+use super::{IngredientType, ingredient::Ingredient};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct RecipeIngredient {
@@ -14,6 +14,50 @@ impl RecipeIngredient {
             quantity,
             unit,
         }
+    }
+    pub async fn get_other_ingredients_by_recipe_id(
+        pool: &sqlx::Pool<sqlx::Postgres>,
+        recipe_id: i32,
+    ) -> Result<Vec<String>, sqlx::Error> {
+        let ingredients = sqlx::query!(
+            "SELECT ingredient_row FROM recipe_other_ingredient WHERE recipe_id = $1",
+            recipe_id
+        )
+        .fetch_all(pool)
+        .await?;
+
+        let ingredients = ingredients
+            .into_iter()
+            .map(|row| row.ingredient_row)
+            .collect();
+
+        Ok(ingredients)
+    }
+    pub async fn get_by_recipe_id(
+        pool: &sqlx::Pool<sqlx::Postgres>,
+        recipe_id: i32,
+    ) -> Result<Vec<Self>, sqlx::Error> {
+        let ingredients = sqlx::query_as!(
+            RecipeIngredientDB,
+            "select name, quantity, unit, type as  \"ingredient_type: IngredientType\"
+            from recipe_ingredient
+            inner join ingredient on name = ingredient_name
+            where recipe_id = $1",
+            recipe_id
+        )
+        .fetch_all(pool)
+        .await?;
+
+        let ingredients = ingredients
+            .into_iter()
+            .map(|db_ingredient| RecipeIngredient {
+                ingredient: Ingredient::new(db_ingredient.name, db_ingredient.ingredient_type),
+                quantity: db_ingredient.quantity,
+                unit: db_ingredient.unit.unwrap_or_default(),
+            })
+            .collect();
+
+        Ok(ingredients)
     }
     pub async fn insert(
         &self,
@@ -34,4 +78,11 @@ impl RecipeIngredient {
 
         Ok(())
     }
+}
+
+struct RecipeIngredientDB {
+    pub name: String,
+    pub ingredient_type: IngredientType,
+    pub quantity: i32,
+    pub unit: Option<String>,
 }
