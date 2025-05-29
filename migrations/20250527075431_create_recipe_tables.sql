@@ -7,35 +7,35 @@ CREATE TABLE ingredient (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE recipe (
-    id SERIAL PRIMARY KEY,
+    recipe_id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    description TEXT,
+    instructions TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE recipe_ingredient (
     recipe_id INT NOT NULL,
     ingredient_name VARCHAR(255) NOT NULL,
-    quantity DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL,
     unit VARCHAR(50),
     PRIMARY KEY (recipe_id, ingredient_name),
     FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE,
     FOREIGN KEY (ingredient_name) REFERENCES ingredient(name) ON DELETE CASCADE
 );
 CREATE TABLE recipe_other_ingredient (
-    id SERIAL PRIMARY KEY,
+    recipe_other_ingredient_id SERIAL PRIMARY KEY,
     recipe_id INT NOT NULL,
     ingredient_row TEXT NOT NULL,
     FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
 );
 CREATE TABLE recipe_usage (
-    id SERIAL PRIMARY KEY,
+    recipe_usage_id SERIAL PRIMARY KEY,
     recipe_id INT NOT NULL,
     usage_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
 );
 CREATE TABLE week (
-    id SERIAL PRIMARY KEY,
+    week_id SERIAL PRIMARY KEY,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
