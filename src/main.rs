@@ -1,5 +1,4 @@
 use anyhow::Context;
-use axum::Router;
 use clap::Parser;
 use sqlx::postgres::PgPoolOptions;
 use vecko_meny_api::{config::Config, http};

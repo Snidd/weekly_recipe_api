@@ -1,0 +1,11 @@
+meta {
+  name: Delete ingredient by name
+  type: http
+  seq: 7
+}
+
+delete {
+  url: http://localhost:8080/api/ingredient/{ingredient_name}
+  body: none
+  auth: inherit
+}

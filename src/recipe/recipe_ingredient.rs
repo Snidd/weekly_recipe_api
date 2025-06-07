@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use super::{IngredientType, ingredient::Ingredient};
 
@@ -8,6 +8,51 @@ pub struct RecipeIngredient {
     pub ingredient: Ingredient,
     pub quantity: i32,
     pub unit: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct RecipeIngredientUnsaved {
+    pub ingredient_name: String,
+    pub ingredient_type: IngredientType,
+    pub quantity: i32,
+    pub unit: String,
+}
+
+impl RecipeIngredientUnsaved {
+    pub fn new(
+        ingredient_name: String,
+        ingredient_type: IngredientType,
+        quantity: i32,
+        unit: String,
+    ) -> Self {
+        Self {
+            ingredient_name,
+            ingredient_type,
+            quantity,
+            unit,
+        }
+    }
+    pub async fn insert(
+        &self,
+        pool: &sqlx::Pool<sqlx::Postgres>,
+        recipe_id: i32,
+    ) -> Result<(), sqlx::Error> {
+        let ingredient =
+            Ingredient::new(self.ingredient_name.clone(), self.ingredient_type.clone());
+        ingredient.insert(pool).await?;
+
+        sqlx::query!(
+            "INSERT INTO recipe_ingredient (recipe_id, ingredient_name, quantity, unit) VALUES ($1, $2, $3, $4)",
+            recipe_id,
+            ingredient.name,
+            self.quantity,
+            self.unit
+        )
+        .execute(pool)
+        .await?;
+
+        Ok(())
+    }
 }
 
 impl RecipeIngredient {

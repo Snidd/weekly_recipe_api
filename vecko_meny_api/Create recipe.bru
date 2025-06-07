@@ -1,0 +1,45 @@
+meta {
+  name: Create recipe
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8080/api/recipe
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Kryddrostad kyckling ’Ras el hanout’ med marockansk morotssallad",
+    "image_url": "https://images.arla.com/recordid/3D9E118B-B4DA-44D9-AE8D50B571151C35/kryddrostad-kyckling-ras-el-hanout-med-marockansk-morotssallad.jpg?width=1269&height=715&mode=crop&crop=(0,462,0,-48)&format=webp",
+    "ingredients": [
+      {
+        "ingredient_name": "kycklinglårfile",
+        "ingredient_type": "Protein",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "ingredient_name": "morot",
+        "ingredient_type": "Carbohydrate",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "ingredient_name": "couscous",
+        "ingredient_type": "Carbohydrate",
+        "quantity": 3,
+        "unit": "dl"
+      }
+    ],
+    "other_ingredients": [
+      "vitlöksklyfta",
+      "torkade aprikoser",
+      "citron",
+      "mandelspån"
+    ],
+    "instructions": "1. Lägg kycklingen i en bunke. Blanda noga med ras el hanout. pressad vitlök och salt. Låt stå kallt 30 min.\n2. Sätt ugnen på 225° eller 200° varmluft.\n3. Blanda kycklingen med smör-&rapsolja. Sprid ut kycklingen på ena sidan av en plåt med bakplåtspapper.\n4. Skala morötterna till salladen och dela dem på längden. Blanda med olivolja och salt. Lägg morötterna på den andra sidan av plåten.\n5. Tillaga kyckling och morötter mitt i ugnen ca 20 min.\n6. Skala och finhacka vitlöken till salladen. Blanda de varma morötterna med vitlök och citronsaft. Låt svalna lite och blanda med hackad koriander vid servering.\n7. Tillaga couscous enligt anvisning på förpackningen men tillsätt smör-&rapsolja i kokvattnet.\n8. Strimla aprikoserna. Fluffa upp couscousen med gaffel och blanda med aprikoser, mandel och citronsaft.\n9. Servera kryddrostad kyckling med ljummen morotssallad, couscous och yoghurt. "
+  }
+}

@@ -5,9 +5,7 @@ pub use ingredient_type::*;
 pub use other_ingredient::*;
 pub use recipe_ingredient::*;
 pub use recipe_usage::*;
-use serde::Serialize;
-use sqlx::pool;
-use time::UtcDateTime;
+use serde::{Deserialize, Serialize};
 mod ingredient;
 mod ingredient_type;
 mod other_ingredient;
@@ -26,10 +24,10 @@ pub struct Recipe {
 }
 
 impl Recipe {
-    pub fn new(
+    pub fn build(
         name: String,
         image_url: Option<String>,
-        ingredients: Vec<RecipeIngredient>,
+        ingredients: Vec<RecipeIngredientUnsaved>,
         other_ingredients: Vec<String>,
         instructions: String,
     ) -> RecipeUnsaved {
@@ -40,6 +38,20 @@ impl Recipe {
             other_ingredients,
             instructions,
         }
+    }
+    pub async fn delete_by_id(
+        pool: &sqlx::Pool<sqlx::Postgres>,
+        id: i32,
+    ) -> Result<(), sqlx::Error> {
+        let result = sqlx::query!("DELETE FROM recipe WHERE recipe_id = $1", id)
+            .execute(pool)
+            .await?;
+
+        if result.rows_affected() == 0 {
+            return Err(sqlx::Error::RowNotFound);
+        }
+
+        Ok(())
     }
     pub async fn get_all(pool: &sqlx::Pool<sqlx::Postgres>) -> Result<Vec<Self>, sqlx::Error> {
         let recipes = sqlx::query_as!(
@@ -137,12 +149,12 @@ struct RecipeDB {
     pub instructions: Option<String>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 
 pub struct RecipeUnsaved {
     pub image_url: Option<String>,
     pub name: String,
-    pub ingredients: Vec<RecipeIngredient>,
+    pub ingredients: Vec<RecipeIngredientUnsaved>,
     pub other_ingredients: Vec<String>,
     pub instructions: String,
 }
@@ -160,18 +172,28 @@ impl RecipeUnsaved {
 
         let recipe_id = recipe.recipe_id;
 
+        for ingredient in &self.ingredients {
+            ingredient.insert(pool, recipe_id).await?;
+        }
+
         let recipe = Recipe {
             id: recipe_id,
             image_url: self.image_url.clone(),
             name: self.name.clone(),
-            ingredients: self.ingredients.clone(),
+            ingredients: self
+                .ingredients
+                .iter()
+                .map(|i| {
+                    RecipeIngredient::new(
+                        Ingredient::new(i.ingredient_name.clone(), i.ingredient_type.clone()),
+                        i.quantity,
+                        i.unit.clone(),
+                    )
+                })
+                .collect(),
             other_ingredients: Vec::new(),
             instructions: Some(self.instructions.clone()),
         };
-
-        for ingredient in &self.ingredients {
-            ingredient.insert(pool, recipe_id).await?;
-        }
 
         for other_ingredient in &self.other_ingredients {
             recipe.add_other_ingredient(pool, &other_ingredient).await?;

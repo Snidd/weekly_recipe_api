@@ -1,0 +1,129 @@
+meta {
+  name: Create all recipes
+  type: http
+  seq: 9
+}
+
+post {
+  url: http://localhost:8080/api/recipes
+  body: json
+  auth: inherit
+}
+
+body:json {
+  [
+    {
+      "name": "Falukorv i ugn",
+      "ingredients": [
+        {
+          "ingredient_name": "falukorv",
+          "ingredient_type": "Protein",
+          "quantity": 500,
+          "unit": "g"
+        },
+        {
+          "ingredient_name": "potatis",
+          "ingredient_type": "Carbohydrate",
+          "quantity": 1000,
+          "unit": "g"
+        }
+      ],
+      "other_ingredients": [
+        "1 ask körsbärstomater",
+        "1 påse riven ost"
+      ],
+      "instructions": "1. Sätt ugnen på 225° eller 200° varmluft.\n2. Skär skåror i falukorven utan att skära igenom helt. Lägg korven i en ugnssäker form. Klicka ca 1 tsk senap i varje skåra.\n3. Strö osten över korven, dela tomaterna på hälften och lägg i formen. Tillaga i mitten av ugnen ca 20 min.\n4. Strö över körvel innan servering och servera med potatismos."
+    },
+    {
+      "name": "Kyckling i gräddsås med pressad potatis",
+      "ingredients": [
+        {
+          "ingredient_name": "kyckling",
+          "ingredient_type": "Protein",
+          "quantity": 1000,
+          "unit": "g"
+        },
+        {
+          "ingredient_name": "potatis",
+          "ingredient_type": "Carbohydrate",
+          "quantity": 500,
+          "unit": "g"
+        }
+      ],
+      "other_ingredients": [
+        "5dl vispgrädde",
+        "2 vitlöksklyftor",
+        "kycklingfond"
+      ],
+      "instructions": ""
+    },
+    {
+      "name": "Köttbullar i tomatsås",
+      "ingredients": [
+        {
+          "ingredient_name": "köttfärs",
+          "ingredient_type": "Protein",
+          "quantity": 500,
+          "unit": "g"
+        },
+        {
+          "ingredient_name": "spaghetti",
+          "ingredient_type": "Carbohydrate",
+          "quantity": 500,
+          "unit": "g"
+        }
+      ],
+      "other_ingredients": [
+        "1 ask krossade tomater",
+        "2 vitlöksklyftor",
+        "tomatpure"
+      ],
+      "instructions": ""
+    },
+    {
+      "name": "Lax i ugn med ris",
+      "ingredients": [
+        {
+          "ingredient_name": "laxfile",
+          "ingredient_type": "Protein",
+          "quantity": 550,
+          "unit": "g"
+        },
+        {
+          "ingredient_name": "ris",
+          "ingredient_type": "Carbohydrate",
+          "quantity": 500,
+          "unit": "g"
+        }
+      ],
+      "other_ingredients": [
+        "majonäs",
+        "citron"
+      ],
+      "instructions": ""
+    },
+    {
+      "name": "Svamppasta",
+      "ingredients": [
+        {
+          "ingredient_name": "svamp",
+          "ingredient_type": "Protein",
+          "quantity": 1000,
+          "unit": "g"
+        },
+        {
+          "ingredient_name": "pasta",
+          "ingredient_type": "Carbohydrate",
+          "quantity": 500,
+          "unit": "g"
+        }
+      ],
+      "other_ingredients": [
+        "vispgrädde",
+        "parmesanost",
+        "chili"
+      ],
+      "instructions": ""
+    }
+  ]
+}

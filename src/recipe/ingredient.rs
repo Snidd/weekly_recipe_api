@@ -69,8 +69,8 @@ impl Ingredient {
 
         let err = result.err().unwrap();
         match err {
-            sqlx::Error::Database(e) if e.is_unique_violation() => return Ok(()),
-            _ => return Err(err),
+            sqlx::Error::Database(e) if e.is_unique_violation() => Ok(()),
+            _ => Err(err),
         }
     }
 }
