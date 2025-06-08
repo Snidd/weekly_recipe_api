@@ -15,6 +15,8 @@ sqlx = { version = "0.8", features = [
     "macros",
     "migrate",
     "bigdecimal",
+    "time",
+    "chrono",
 ] }
 serde = { version = "1.0.219", features = ["derive"] }
 time = "0.3.41"
@@ -28,3 +30,4 @@ thiserror = "2.0.12"
 anyhow = "1.0.98"
 clap = { version = "4.5.39", features = ["derive", "env"] }
 log = "0.4.27"
+chrono = { version = "0.4.41", features = ["serde"] }

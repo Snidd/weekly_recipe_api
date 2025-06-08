@@ -6,6 +6,7 @@ pub use other_ingredient::*;
 pub use recipe_ingredient::*;
 pub use recipe_usage::*;
 use serde::{Deserialize, Serialize};
+use sqlx::{Execute, Postgres, QueryBuilder};
 mod ingredient;
 mod ingredient_type;
 mod other_ingredient;
@@ -38,6 +39,43 @@ impl Recipe {
             other_ingredients,
             instructions,
         }
+    }
+    pub async fn update_fields(
+        id: i32,
+        image_url: Option<String>,
+        name: Option<String>,
+        instructions: Option<String>,
+        pool: &sqlx::Pool<sqlx::Postgres>,
+    ) -> Result<(), sqlx::Error> {
+        //TODO: Optimize with a single query
+
+        if let Some(image_url) = image_url {
+            sqlx::query!(
+                "UPDATE recipe SET image_url = $1 WHERE recipe_id = $2",
+                image_url,
+                id
+            )
+            .execute(pool)
+            .await?;
+        }
+
+        if let Some(name) = name {
+            sqlx::query!("UPDATE recipe SET name = $1 WHERE recipe_id = $2", name, id)
+                .execute(pool)
+                .await?;
+        }
+
+        if let Some(instructions) = instructions {
+            sqlx::query!(
+                "UPDATE recipe SET instructions = $1 WHERE recipe_id = $2",
+                instructions,
+                id
+            )
+            .execute(pool)
+            .await?;
+        }
+
+        Ok(())
     }
     pub async fn delete_by_id(
         pool: &sqlx::Pool<sqlx::Postgres>,

@@ -4,6 +4,7 @@ use crate::recipe::RecipeUnsaved;
 use crate::{http::ApiContext, recipe::Recipe};
 use axum::routing::post;
 use axum::{Extension, Json, Router, routing::get};
+use serde::{Deserialize, Serialize};
 
 pub fn router() -> Router {
     // By having each module responsible for setting up its own routing,
@@ -13,8 +14,44 @@ pub fn router() -> Router {
         .route("/api/recipe", post(create_recipe))
         .route(
             "/api/recipe/{recipe_id}",
-            get(get_recipe_by_id).delete(delete_recipe_by_id),
+            get(get_recipe_by_id)
+                .delete(delete_recipe_by_id)
+                .put(update_recipe_fields_by_id),
         )
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+struct UpdateRecipeFields {
+    image_url: Option<String>,
+    name: Option<String>,
+    instructions: Option<String>,
+}
+
+#[derive(Serialize)]
+struct ResultOK {
+    success: bool,
+    message: String,
+}
+
+async fn update_recipe_fields_by_id(
+    ctx: Extension<ApiContext>,
+    axum::extract::Path(recipe_id): axum::extract::Path<i32>,
+    Json(update_fields): Json<UpdateRecipeFields>,
+) -> Result<Json<ResultOK>> {
+    Recipe::update_fields(
+        recipe_id,
+        update_fields.image_url,
+        update_fields.name,
+        update_fields.instructions,
+        &ctx.db,
+    )
+    .await?;
+    log::debug!("Updated recipe with ID: {}", recipe_id);
+
+    Ok(Json(ResultOK {
+        success: true,
+        message: format!("Updated recipe with ID: {}", recipe_id),
+    }))
 }
 
 #[axum::debug_handler]

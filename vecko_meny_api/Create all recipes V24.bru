@@ -1,0 +1,125 @@
+meta {
+  name: Create all recipes V24
+  type: http
+  seq: 11
+}
+
+post {
+  url: http://localhost:8080/api/recipes
+  body: json
+  auth: inherit
+}
+
+body:json {
+  [
+    {
+      "name": "Stekt falukorv med stuvade makaroner",
+      "ingredients": [
+        {
+          "ingredient_name": "falukorv",
+          "ingredient_type": "Protein",
+          "quantity": 500,
+          "unit": "g"
+        },
+        {
+          "ingredient_name": "makaroner",
+          "ingredient_type": "Carbohydrate",
+          "quantity": 400,
+          "unit": "g"
+        }
+      ],
+      "other_ingredients": [
+        "1 liter mjölk",
+        "1 påse riven ost"
+      ],
+      "instructions": ""
+    },
+    {
+      "name": "Spaghetti med köttfärsås basic",
+      "ingredients": [
+        {
+          "ingredient_name": "köttfärs",
+          "ingredient_type": "Protein",
+          "quantity": 1000,
+          "unit": "g"
+        },
+        {
+          "ingredient_name": "spaghetti",
+          "ingredient_type": "Carbohydrate",
+          "quantity": 400,
+          "unit": "g"
+        }
+      ],
+      "other_ingredients": [
+        "2dl vispgrädde",
+        "2 vitlöksklyftor",
+        "krossade tomater"
+      ],
+      "instructions": ""
+    },
+    {
+      "name": "Lax pasta",
+      "ingredients": [
+        {
+          "ingredient_name": "laxfile",
+          "ingredient_type": "Protein",
+          "quantity": 550,
+          "unit": "g"
+        },
+        {
+          "ingredient_name": "pasta",
+          "ingredient_type": "Carbohydrate",
+          "quantity": 500,
+          "unit": "g"
+        }
+      ],
+      "other_ingredients": [
+        "grädde",
+        "ost"
+      ],
+      "instructions": ""
+    },
+    {
+      "name": "Fläskfilegryta",
+      "ingredients": [
+        {
+          "ingredient_name": "fläskfile",
+          "ingredient_type": "Protein",
+          "quantity": 750,
+          "unit": "g"
+        },
+        {
+          "ingredient_name": "potatis",
+          "ingredient_type": "Carbohydrate",
+          "quantity": 500,
+          "unit": "g"
+        }
+      ],
+      "other_ingredients": [
+        "3dl vispgrädde",
+        "1 gul lök"
+      ],
+      "instructions": "https://www.ica.se/recept/flaskfilegryta-med-champinjoner-724256/"
+    },
+    {
+      "name": "Tacogratäng",
+      "ingredients": [
+        {
+          "ingredient_name": "köttfärs",
+          "ingredient_type": "Protein",
+          "quantity": 750,
+          "unit": "g"
+        }
+      ],
+      "other_ingredients": [
+        "Tortillabröd",
+        "Tortillachips",
+        "Majs",
+        "Salsa",
+        "Riven Ost",
+        "Tacokrydda"
+      ],
+      "instructions": "TBA"
+    }
+  ]
+}

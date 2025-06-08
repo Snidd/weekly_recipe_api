@@ -10,6 +10,7 @@ use tower_http::{add_extension::AddExtensionLayer, trace::TraceLayer};
 
 pub mod ingredients;
 pub mod recipe;
+pub mod week;
 
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 
@@ -45,6 +46,8 @@ pub async fn serve(config: Config, db: PgPool) -> anyhow::Result<()> {
 
 fn api_router() -> Router {
     // This is the order that the modules were authored in.
-    recipe::router().merge(ingredients::router())
+    recipe::router()
+        .merge(ingredients::router())
+        .merge(week::router())
     //.merge(articles::router())
 }

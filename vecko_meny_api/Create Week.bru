@@ -1,0 +1,18 @@
+meta {
+  name: Create Week
+  type: http
+  seq: 12
+}
+
+post {
+  url: http://localhost:8080/api/week
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "description": "Vecka 24",
+    "recipe_ids": [11,12,13,14,15]
+  }
+}

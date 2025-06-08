@@ -1,0 +1,19 @@
+meta {
+  name: Update recipe fields
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://localhost:8080/api/recipe/5
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "image_url": "new image",
+    "name": "Falukorv i ugnen",
+    "instructions": "1. Sätt ugnen på 225° eller 200° varmluft.\n2. Skär skåror i falukorven utan att skära igenom helt. Lägg korven i en ugnssäker form. Klicka ca 1 tsk senap i varje skåra.\n3. Strö osten över korven, dela tomaterna på hälften och lägg i formen. Tillaga i mitten av ugnen ca 20 min.\n4. Strö över körvel innan servering och servera med potatismos..."
+  }
+}
