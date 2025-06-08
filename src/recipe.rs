@@ -6,7 +6,7 @@ pub use other_ingredient::*;
 pub use recipe_ingredient::*;
 pub use recipe_usage::*;
 use serde::{Deserialize, Serialize};
-use sqlx::{Execute, Postgres, QueryBuilder};
+
 mod ingredient;
 mod ingredient_type;
 mod other_ingredient;
@@ -234,7 +234,7 @@ impl RecipeUnsaved {
         };
 
         for other_ingredient in &self.other_ingredients {
-            recipe.add_other_ingredient(pool, &other_ingredient).await?;
+            recipe.add_other_ingredient(pool, other_ingredient).await?;
         }
 
         Ok(recipe)
