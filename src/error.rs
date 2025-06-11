@@ -54,6 +54,9 @@ pub enum Error {
     #[error("an error occurred with the database")]
     Sqlx(#[from] sqlx::Error),
 
+    #[error("an error parsing the form")]
+    Multipart(#[from] axum::extract::multipart::MultipartError),
+
     /// Return `500 Internal Server Error` on a `anyhow::Error`.
     ///
     /// `anyhow::Error` is used in a few places to capture context and backtraces
@@ -95,6 +98,7 @@ impl Error {
 
     fn status_code(&self) -> StatusCode {
         match self {
+            Self::Multipart(_) => StatusCode::PAYLOAD_TOO_LARGE,
             Self::Unauthorized => StatusCode::UNAUTHORIZED,
             Self::Forbidden => StatusCode::FORBIDDEN,
             Self::NotFound => StatusCode::NOT_FOUND,

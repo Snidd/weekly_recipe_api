@@ -1,0 +1,26 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO ingredient (name, type) VALUES ($1, $2)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        {
+          "Custom": {
+            "name": "ingredient_type",
+            "kind": {
+              "Enum": [
+                "protein",
+                "carbohydrate",
+                "other"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "5c291a7b1983b4cac35ad3732e01decd2716c9c77e596d4d76e0b6dbc615e5fd"
+}

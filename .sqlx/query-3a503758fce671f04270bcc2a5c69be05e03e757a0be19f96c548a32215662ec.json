@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT image_id, image_content FROM image WHERE image_id = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "image_id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "image_content",
+        "type_info": "Bytea"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "3a503758fce671f04270bcc2a5c69be05e03e757a0be19f96c548a32215662ec"
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Delete image
+  type: http
+  seq: 17
+}
+
+delete {
+  url: http://localhost:8080/api/image/1
+  body: none
+  auth: inherit
+}
+
+body:multipart-form {
+  image: @file(C:\Users\mkjel\Downloads\bc7c94c9-1d71-45e2-bb11-ccdb99ddf889.jpg)
+}

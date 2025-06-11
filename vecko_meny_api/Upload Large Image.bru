@@ -1,0 +1,15 @@
+meta {
+  name: Upload Large Image
+  type: http
+  seq: 18
+}
+
+post {
+  url: http://localhost:8080/api/image
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  image: @file(C:\Users\mkjel\OneDrive\Bilder\Stockholms_stadshus_september_2011.jpg)
+}

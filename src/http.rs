@@ -8,6 +8,7 @@ use sqlx::PgPool;
 use tower::ServiceBuilder;
 use tower_http::{add_extension::AddExtensionLayer, trace::TraceLayer};
 
+pub mod image;
 pub mod ingredients;
 pub mod recipe;
 pub mod week;
@@ -49,5 +50,6 @@ fn api_router() -> Router {
     recipe::router()
         .merge(ingredients::router())
         .merge(week::router())
+        .merge(image::router())
     //.merge(articles::router())
 }

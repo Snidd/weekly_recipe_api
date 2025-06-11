@@ -1,0 +1,39 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT name, type as \"ingredient_type: IngredientType\" FROM ingredient WHERE name = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "ingredient_type: IngredientType",
+        "type_info": {
+          "Custom": {
+            "name": "ingredient_type",
+            "kind": {
+              "Enum": [
+                "protein",
+                "carbohydrate",
+                "other"
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "aec6ac7b134680a6d7fb8b12ca7d5b4ab67ddbbfb4bb8ac8ae2233bcf652df70"
+}

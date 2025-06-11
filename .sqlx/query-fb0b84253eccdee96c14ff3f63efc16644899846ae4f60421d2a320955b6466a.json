@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE recipe SET instructions = $1 WHERE recipe_id = $2",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "fb0b84253eccdee96c14ff3f63efc16644899846ae4f60421d2a320955b6466a"
+}

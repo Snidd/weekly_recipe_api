@@ -1,0 +1,15 @@
+meta {
+  name: Get image
+  type: http
+  seq: 16
+}
+
+get {
+  url: http://localhost:8080/api/image/3
+  body: none
+  auth: inherit
+}
+
+body:multipart-form {
+  image: @file(C:\Users\mkjel\Downloads\bc7c94c9-1d71-45e2-bb11-ccdb99ddf889.jpg)
+}

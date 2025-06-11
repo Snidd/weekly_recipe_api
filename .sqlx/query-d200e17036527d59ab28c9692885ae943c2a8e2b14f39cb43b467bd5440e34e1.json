@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO recipe_other_ingredient (recipe_id, ingredient_row) VALUES ($1, $2) RETURNING recipe_other_ingredient_id",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "recipe_other_ingredient_id",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Text"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "d200e17036527d59ab28c9692885ae943c2a8e2b14f39cb43b467bd5440e34e1"
+}

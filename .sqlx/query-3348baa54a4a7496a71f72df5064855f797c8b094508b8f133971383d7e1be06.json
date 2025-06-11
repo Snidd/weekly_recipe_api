@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE recipe SET image_url = $1 WHERE recipe_id = $2",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "3348baa54a4a7496a71f72df5064855f797c8b094508b8f133971383d7e1be06"
+}

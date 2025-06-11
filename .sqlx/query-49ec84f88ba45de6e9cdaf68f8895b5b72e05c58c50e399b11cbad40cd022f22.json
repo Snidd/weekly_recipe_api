@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "DELETE FROM week WHERE week_id = $1",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "49ec84f88ba45de6e9cdaf68f8895b5b72e05c58c50e399b11cbad40cd022f22"
+}

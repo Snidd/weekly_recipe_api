@@ -1,0 +1,51 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "select name, quantity, unit, type as  \"ingredient_type: IngredientType\"\n            from recipe_ingredient\n            inner join ingredient on name = ingredient_name\n            where recipe_id = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "quantity",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "unit",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "ingredient_type: IngredientType",
+        "type_info": {
+          "Custom": {
+            "name": "ingredient_type",
+            "kind": {
+              "Enum": [
+                "protein",
+                "carbohydrate",
+                "other"
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      false
+    ]
+  },
+  "hash": "254830bc4075fba11cdf69c53986c10591794ea00ae5cd8261a6e339522775b6"
+}
