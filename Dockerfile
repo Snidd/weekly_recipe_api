@@ -30,5 +30,5 @@ WORKDIR /app
 COPY ./migrations ./migrations
 COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/vecko_meny_api vecko_meny_api
 
-EXPOSE 8000/tcp
+EXPOSE 8080/tcp
 CMD ["/app/vecko_meny_api"]

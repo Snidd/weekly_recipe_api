@@ -1,5 +1,3 @@
-cargo-features = ["edition2024"]
-
 [package]
 name = "vecko_meny_api"
 version = "0.1.0"
@@ -15,7 +13,6 @@ strum_macros = "0.27.1"
 tokio = { version = "1.45.1", features = ["full"] }
 sqlx = { version = "0.8", features = [
     "runtime-tokio",
-    "tls-native-tls",
     "postgres",
     "derive",
     "macros",

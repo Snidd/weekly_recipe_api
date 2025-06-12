@@ -19,20 +19,20 @@ CREATE TABLE recipe_ingredient (
     quantity INT NOT NULL,
     unit VARCHAR(50),
     PRIMARY KEY (recipe_id, ingredient_name),
-    FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE,
+    FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE,
     FOREIGN KEY (ingredient_name) REFERENCES ingredient(name) ON DELETE CASCADE
 );
 CREATE TABLE recipe_other_ingredient (
     recipe_other_ingredient_id SERIAL PRIMARY KEY,
     recipe_id INT NOT NULL,
     ingredient_row TEXT NOT NULL,
-    FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
+    FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
 );
 CREATE TABLE recipe_usage (
     recipe_usage_id SERIAL PRIMARY KEY,
     recipe_id INT NOT NULL,
     usage_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
+    FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
 );
 CREATE TABLE week (
     week_id SERIAL PRIMARY KEY,
@@ -44,6 +44,6 @@ CREATE TABLE week_recipe (
     week_id INT NOT NULL,
     recipe_id INT NOT NULL,
     PRIMARY KEY (week_id, recipe_id),
-    FOREIGN KEY (week_id) REFERENCES week(id) ON DELETE CASCADE,
-    FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
+    FOREIGN KEY (week_id) REFERENCES week(week_id) ON DELETE CASCADE,
+    FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
 );
